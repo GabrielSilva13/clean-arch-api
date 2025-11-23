@@ -1,0 +1,17 @@
+target/
+*.log
+*.iml
+.idea/
+.vscode/
+*.class
+*.jar
+*.war
+*.ear
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
