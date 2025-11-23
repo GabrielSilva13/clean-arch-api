@@ -1,130 +1,215 @@
-# Clean Arch API — Java + Spring Boot
+# 🚀 **Clean Arch API – Java + Spring Boot**
 
-API REST em **Java + Spring Boot**, com:
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-3.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-Security-orange?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/Status-Ativo-success?style=for-the-badge" />
+</p>
 
-- CRUD de Tasks
-- Autenticação com **JWT**
-- Banco de dados **PostgreSQL**
-- Organização em camadas (domain, application, infrastructure, interface)
-- Documentação automática com **OpenAPI / Swagger**
+---
 
-## Tecnologias
+# 📌 **Sobre o Projeto**
 
-- Java 17
-- Spring Boot 3
-- Spring Web
-- Spring Data JPA
-- Spring Security
-- JWT (jjwt)
-- PostgreSQL
-- Maven
+API REST completa com **Java + Spring Boot**, desenvolvida seguindo princípios de **Clean Architecture**, contendo:
 
-## Arquitetura (visão geral)
+✨ Autenticação JWT
+✨ CRUD completo de Tasks
+✨ Postgres como banco principal
+✨ Documentação automática via Swagger
+✨ Projeto limpo, padronizado e pronto para produção
+✨ Ideal para portfólio e demonstração profissional
 
-- `domain`: entidades de domínio e repositórios (`User`, `Task`, etc.)
-- `application`: regras de negócio / casos de uso (`AuthService`, `TaskService`, `JwtService`)
-- `config`: cross-cutting (segurança, JWT, Swagger/OpenAPI)
-- `interface`: controllers REST (camada de entrada)
-- `infrastructure`: detalhes de infraestrutura (seed de dados, integrações)
+---
 
-## Endpoints principais
+# 🧱 **Arquitetura do Projeto**
 
-### Auth
+```
+src/main/java/com/gabriel/cleanarch
+│
+├── config/              # Configurações globais (JWT, Security, Swagger)
+├── domain/              # Entidades e Regras essenciais do domínio
+│   ├── user/
+│   └── task/
+├── application/         # Casos de uso e regras de aplicação (Services)
+│   ├── auth/
+│   └── task/
+├── interface/           # Entrada da aplicação (Controllers REST)
+│   ├── auth/
+│   └── task/
+└── infrastructure/      # Recursos externos (Seed, integrações)
+```
 
-`POST /api/auth/register`  
-Body:
+Arquitetura modular, escalável e fácil de manter.
+
+---
+
+# 🔐 **Funcionalidades**
+
+### ✔️ Autenticação e Segurança
+
+* Registro
+* Login
+* Geração e validação de JWT
+* BCrypt Hash
+* Stateless Security
+
+### ✔️ CRUD de Tasks (protegido)
+
+* Criar Task
+* Listar Task do usuário autenticado
+* Atualizar Task
+* Remover Task
+
+### ✔️ Geral
+
+* Estrutura limpa e organizada
+* Documentação automática via Swagger
+* Banco PostgreSQL com JPA
+
+---
+
+# 🚦 **Endpoints Principais**
+
+## 🔑 Auth
+
+### **POST** `/api/auth/register`
 
 ```json
 {
   "email": "user@example.com",
   "password": "123456"
 }
-````
+```
+
+### **POST** `/api/auth/login`
+
+```json
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
+```
 
 Resposta:
 
 ```json
 {
-  "token": "<JWT>"
+  "token": "<jwt>"
 }
 ```
-
-`POST /api/auth/login`
-Body igual ao register.
 
 ---
 
-### Tasks (requer Header Authorization: Bearer <token>)
+## 📝 Tasks (*Require Authorization header*)
 
-`GET /api/tasks` – lista tasks do usuário autenticado.
+### **GET** `/api/tasks`
 
-`POST /api/tasks`
-Body:
+### **POST** `/api/tasks`
 
 ```json
 {
-  "title": "Minha primeira task",
-  "description": "Alguma descrição"
+  "title": "Minha Task",
+  "description": "Descrição aqui"
 }
 ```
 
-`PUT /api/tasks/{id}`
+### **PUT** `/api/tasks/{id}`
 
 ```json
 {
-  "title": "Task atualizada",
+  "title": "Atualizada",
   "description": "Nova descrição",
   "done": true
 }
 ```
 
-`DELETE /api/tasks/{id}`
+### **DELETE** `/api/tasks/{id}`
 
 ---
 
-## Rodando localmente
+# 🧰 **Tecnologias Utilizadas**
 
-1. Tenha **Java 17+** e **Maven** instalados.
-2. Crie um banco PostgreSQL:
+| Área             | Tecnologias                |
+| ---------------- | -------------------------- |
+| **Backend**      | Java 17, Spring Boot 3     |
+| **Segurança**    | Spring Security + JWT      |
+| **Banco**        | PostgreSQL + JPA/Hibernate |
+| **Documentação** | Swagger / Springdoc        |
+| **Build**        | Maven                      |
+| **Arquitetura**  | Clean Architecture         |
+
+---
+
+# ⚙️ **Como Rodar Localmente**
+
+### 1️⃣ Requisitos
+
+* Java **17+**
+* Maven
+* PostgreSQL
+
+### 2️⃣ Configurar banco
 
 ```sql
 CREATE DATABASE cleanarch;
 ```
 
-3. Ajuste `application.properties` com usuário/senha do seu Postgres.
-4. Rode:
+### 3️⃣ Configurar `application.properties`
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/cleanarch
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.hibernate.ddl-auto=update
+```
+
+### 4️⃣ Rodar
 
 ```bash
 mvn spring-boot:run
 ```
 
-5. Acesse:
+### 5️⃣ Acessos úteis
 
-* Swagger UI: `http://localhost:8080/swagger-ui.html`
-* Healthcheck simples: `GET http://localhost:8080/health` (se quiser criar depois)
-
-## Deploy no Render (resumo)
-
-* Suba o projeto para um repositório no GitHub.
-* Crie um serviço Web no Render:
-
-  * Build: `mvn clean package`
-  * Start: `java -jar target/clean-arch-api-0.0.1-SNAPSHOT.jar`
-* Configure as variáveis de ambiente:
-
-  * `SPRING_DATASOURCE_URL`
-  * `SPRING_DATASOURCE_USERNAME`
-  * `SPRING_DATASOURCE_PASSWORD`
+* Swagger: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+* API Root: **[http://localhost:8080/api](http://localhost:8080/api)**
 
 ---
 
-> Projeto simples, mas mostra:
->
-> * Java + Spring Boot
-> * API REST real
-> * Auth JWT
-> * PostgreSQL
-> * Separação em camadas
-> * Documentação com Swagger
+# 🚀 **Deploy no Render**
 
+### Build Command:
 
+```
+mvn clean package
+```
+
+### Start Command:
+
+```
+java -jar target/clean-arch-api-0.0.1-SNAPSHOT.jar
+```
+
+### Variáveis de ambiente:
+
+```
+DB_USER=
+DB_PASS=
+DB_URL=
+JWT_SECRET=
+```
+
+---
+
+# 🧑‍💻 Autor
+
+**Gabriel Gonçalves**
+Desenvolvedor Fullstack
+📍 Goiás – Brasil
+🔗 linkedin.com/in/gabriel-gonçalves-8586aa226
+
+---
+
+# ⭐ **Se gostou, deixa uma star no repo!**
